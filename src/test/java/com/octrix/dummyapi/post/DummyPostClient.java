@@ -6,7 +6,6 @@ import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
 
 public class DummyPostClient {
-    private String appId="62e91453bbc7a02d6fb21d0a";
     public Response createPost(DummyPostModel body){
         Response response = given()
                 .contentType(ContentType.JSON)
