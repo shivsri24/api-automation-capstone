@@ -20,15 +20,15 @@ public class DummyApiE2ETest {
         dummyPostValidator.assertPostDetails(body);
         String id=postResponse.getId();
         Response response= dummyPostClient.deletePost(id);
+        System.out.println(response.body().prettyPeek());
     }
 
     @Test(groups={"sanity", "user"}, priority = 1)
-    public void createUserAndDeleteUser(){
+    public void createUserAndGetUserUnderMyAccount(){
         DummyUserModel body=new DummyUserModel.Builder().build();
         DummyCreateUserResponse userResponse=dummyUserUtil.dummyCreateUserResponse(body);
-        dummyUserValidator.assertUserDetails(body);
-        String id=userResponse.getId();
+        dummyUserValidator.assertUserDetails(body, userResponse);
         Response response= dummyUserClient.getAllUsersUnderMyAccountResponse();
-        System.out.println("All users are:" + response);
+        System.out.println("All users are:" + response.body().prettyPeek());
     }
 }

@@ -1,6 +1,5 @@
 package com.octrix.dummyapi.user;
 
-import com.octrix.dummyapi.post.DummyPostModel;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
