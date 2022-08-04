@@ -14,7 +14,7 @@ public class DummyUserClient {
                 .get("https://dummyapi.io/data/v1/user");
     }
 
-    public Response getAllUsersByMeResponse() {
+    public Response getAllUsersUnderMyAccountResponse() {
         return given()
                 .queryParam("created",1)
                 .header("app-id", System.getenv("app-id"))
