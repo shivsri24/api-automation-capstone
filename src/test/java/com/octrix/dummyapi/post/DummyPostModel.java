@@ -1,10 +1,11 @@
 package com.octrix.dummyapi.post;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class DummyPostModel {
     private String text;
     private String image;
