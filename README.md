@@ -1,8 +1,8 @@
 # Capstone Project 
 This is the REST API project, which has two End to End Test cases. 
 This has a dependency on: 
-* rest-asssured
-* lombok
+* okhttp3
+* json
 * testng
 * dummy-api
 
