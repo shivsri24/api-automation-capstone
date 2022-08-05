@@ -32,13 +32,7 @@ dependencies {
     // OkHTTPClient Dependency
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
 
-    implementation group: 'io.rest-assured', name: 'rest-assured', version: '5.1.1'
-
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
-    testAnnotationProcessor group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
-
-    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
-    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+    implementation 'org.json:json:20171018'
 
 }
 

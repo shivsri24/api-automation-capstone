@@ -1,33 +1,52 @@
 package com.octrix.dummyapi.user;
 
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
+import okhttp3.*;
 
-import static io.restassured.RestAssured.given;
+import java.io.IOException;
 
-public class DummyUserClient {
-    public Response getAllUsersResponse() {
-        return given()
-                .queryParam("limit",10)
-                .header("app-id", System.getenv("app-id"))
-                .get("https://dummyapi.io/data/v1/user");
+ class DummyUserClient {
+     Response getAllUsersResponse() throws IOException {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("https://dummyapi.io/data/v1/user")
+                .addHeader("app-id", System.getenv("app-id"))
+                .addHeader("Content-Type", "application/json")
+                .get()
+                .build();
+        okhttp3.Response response = client.newCall(request).execute();
+        return response;
     }
 
-    public Response getAllUsersUnderMyAccountResponse() {
-        return given()
-                .queryParam("created",1)
-                .header("app-id", System.getenv("app-id"))
-                .get("https://dummyapi.io/data/v1/user");
+    Response getAllUsersUnderMyAccountResponse(int id) throws IOException {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("https://dummyapi.io/data/v1/user?created="+id)
+                .addHeader("app-id", System.getenv("app-id"))
+                .addHeader("Content-Type", "application/json")
+                .get()
+                .build();
+        okhttp3.Response response = client.newCall(request).execute();
+        return response;
     }
 
-    public Response createUser(DummyUserModel body){
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .header("app-id", System.getenv("app-id"))
-                .body(body)
-                .post("https://dummyapi.io/data/v1/user/create");
-
-        response.then().log().body();
+    Response createUser(String firstname, String lastname, String email) throws IOException {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n" +
+                "    \"firstName\" : "+firstname+",\n" +
+                "    \"lastName\" : "+lastname+",\n" +
+                "    \"email\" : "+email+"\n" +
+                "}");
+        Request request = new Request.Builder()
+                .url("https://dummyapi.io/data/v1/user/create")
+                .addHeader("app-id", System.getenv("app-id"))
+                .addHeader("Content-Type", "application/json")
+                .post(body)
+                .build();
+        Response response = client.newCall(request).execute();
         return response;
     }
 }

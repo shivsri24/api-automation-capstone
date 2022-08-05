@@ -1,33 +1,55 @@
 package com.octrix.dummyapi.post;
 
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
+import okhttp3.*;
 
-import static io.restassured.RestAssured.given;
+import java.io.IOException;
 
-public class DummyPostClient {
-    public Response createPost(DummyPostModel body){
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .header("app-id", System.getenv("app-id"))
-                .body(body)
-                .post("https://dummyapi.io/data/v1/post/create");
-
-        response.then().log().body();
+ class DummyPostClient {
+    Response createPost() throws IOException {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n    " +
+                "\"text\": \"This is the post description\",\n" +
+                "\"image\": \"https://image.shutterstock.com/image-vector/new-post-neon-text-video-600w-1444569020.jpg\",\n" +
+                "\"likes\": 0,\n" +
+                "\"tags\": [\n        \"samplepost\"\n    ],\n" +
+                "\"owner\": "+System.getenv("app-id")+"\n}");
+        Request request = new Request.Builder()
+                .url("https://dummyapi.io/data/v1/post/create")
+                .addHeader("app-id", System.getenv("app-id"))
+                .addHeader("Content-Type", "application/json")
+                .post(body)
+                .build();
+        Response response = client.newCall(request).execute();
         return response;
     }
 
-    public Response getPost(String id){
-        return given()
-                .header("app-id",System.getenv("app-id"))
-                .pathParam("id",id)
-                .get("https://dummyapi.io/data/v1/post/{id}");
+    Response getPost(String id) throws IOException {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("https://dummyapi.io/data/v1/post/"+id)
+                .addHeader("app-id", System.getenv("app-id"))
+                .addHeader("Content-Type", "application/json")
+                .get()
+                .build();
+        Response response = client.newCall(request).execute();
+        return response;
     }
 
-    public Response deletePost(String id){
-        return given()
-                .header("app-id",System.getenv("app-id"))
-                .pathParam("id",id)
-                .delete("https://dummyapi.io/data/v1/post/{id}");
+    Response deletePost(String id) throws IOException {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder()
+                .url("https://dummyapi.io/data/v1/post/"+id)
+                .addHeader("app-id", System.getenv("app-id"))
+                .addHeader("Content-Type", "application/json")
+                .delete()
+                .build();
+        Response response = client.newCall(request).execute();
+        return response;
     }
 }
